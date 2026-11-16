@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#07111d" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23d8ff3e' d='M8 56 24 8h32L40 56z'/%3E%3C/svg%3E" />
+  <title>APEX / FORMULA RACE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="game-shell">
+    <canvas id="game" aria-label="Formula racing game"></canvas>
+    <div class="vignette"></div>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Apex Formula Racing"><span class="brand-mark">A</span><span>APEX<span class="brand-sub">FORMULA RACING</span></span></a>
+      <div class="event"><span class="live-dot"></span><span>GRAND PRIX</span><i></i><b>MONZA</b></div>
+      <div class="top-actions">
+        <button class="icon-button pause-button" id="pauseBtn" title="일시정지">❚❚ <span>PAUSE</span></button>
+        <button class="icon-button" id="soundBtn" title="사운드 켜기/끄기">♫ <span>SOUND</span></button>
+      </div>
+    </header>
+    <section class="race-hud" id="raceHud" aria-live="polite">
+      <div class="hud-left">
+        <div class="position"><span class="label">POSITION</span><strong id="position">P 08</strong><small>/ 08</small></div>
+        <div class="lap-box"><span class="label">LAP</span><strong id="lap">01</strong><small>/ 03</small></div>
+      </div>
+      <div class="hud-center">
+        <div class="timer" id="timer">00:00.000</div>
+        <div class="delta"><span class="delta-dot"></span> <span id="statusText">FORMATION LAP</span></div>
+        <div class="laptimes" id="lapTimes"><span>LAST</span> <b>--:--.---</b><i></i><span>BEST</span> <b class="best">--:--.---</b></div>
+      </div>
+      <div class="hud-right">
+        <div class="speed-wrap"><strong id="speed">000</strong><span>KM/H</span></div>
+        <div class="gear-wrap" id="gearWrap"><strong id="gear">N</strong><span>GEAR</span><i class="shift-led"></i></div>
+      </div>
+    </section>
+    <section class="telemetry" id="telemetry">
+      <div class="tele-head"><span>LIVE TELEMETRY</span><span id="drsState">ERS <b>READY</b></span></div>
+      <div class="tele-row"><span>RPM</span><div class="rpm-bars" id="rpmBars"></div><b id="rpmText">4,200</b></div>
+      <div class="tele-row"><span>THROTTLE</span><div class="meter"><i id="throttleMeter"></i></div><b id="throttleText">0%</b></div>
+      <div class="tele-row"><span>BRAKE</span><div class="meter brake-meter"><i id="brakeMeter"></i></div><b id="brakeText">0%</b></div>
+      <div class="tyres">
+        <span class="tyre-title">TYRE GRIP</span>
+        <div class="tyre-set"><i id="tyreFL"></i><i id="tyreFR"></i><i id="tyreRL"></i><i id="tyreRR"></i></div>
+        <span id="gripText">100%</span>
+      </div>
+      <div class="tele-foot"><span>ERS</span><div class="ers-track"><i id="ersMeter"></i></div><b id="ersText">100%</b></div>
+    </section>
+    <div class="track-info"><span class="track-icon">◈</span><span id="cornerName">START / FINISH</span><small>ITALY · 5.793 KM</small></div>
+    <div class="race-message" id="raceMessage"><span class="message-line"></span><span id="messageText">READY</span><span class="message-line"></span></div>
+    <div class="start-card" id="startCard">
+      <div class="card-kicker"><span>2025 SEASON</span><span class="kicker-line"></span><span>RACE 01 / 24</span></div>
+      <h1>OWN THE<br /><em>APEX.</em></h1>
+      <p>한계를 밀어붙여. 단 한 번의 실수도 용납되지 않는<br />포뮬러 레이싱의 정점으로.</p>
+      <div class="card-details"><div><span>TRACK</span><b>MONZA</b></div><div><span>RACE DISTANCE</span><b>3 LAPS</b></div><div><span>WEATHER</span><b><i class="sun-icon">☀</i> CLEAR · 24°C</b></div></div>
+      <button class="start-button" id="startBtn"><span>RACE START</span><b>→</b></button>
+      <div class="controls-hint"><span>W / ↑</span> THROTTLE <i></i><span>S / ↓</span> BRAKE <i></i><span>A D</span> STEER <i></i><span>Q / E</span> GEAR</div>
+    </div>
+    <div class="start-card result-card hidden" id="resultCard">
+      <div class="card-kicker"><span>RACE COMPLETE</span><span class="kicker-line"></span><span>GRAND PRIX · MONZA</span></div>
+      <div class="result-hero">
+        <div><span class="stat-label">FINAL POSITION</span><strong id="resultPos">P 01</strong><small>/ 08</small></div>
+        <div class="result-time"><span class="stat-label">RACE TIME</span><strong id="resultTime">00:00.000</strong></div>
+      </div>
+      <div class="card-details result-details">
+        <div><span>BEST LAP</span><b id="resultBest">--:--.---</b></div>
+        <div><span>TYRE WEAR</span><b id="resultWear">0%</b></div>
+        <div><span>TOP SPEED</span><b id="resultSpeed">0 KM/H</b></div>
+      </div>
+      <div class="result-laps" id="resultLaps"></div>
+      <button class="start-button" id="restartBtn"><span>RACE AGAIN</span><b>↻</b></button>
+    </div>
+    <div class="pause-panel" id="pausePanel"><span>RACE PAUSED</span><small>PRESS <b>P</b> TO RESUME</small></div>
+    <div class="bottom-bar">
+      <div class="bottom-left"><span class="flag-icon">▥</span><span>F1 · CIRCUIT DE MONZA</span><i></i><span>SESSION 01:42</span></div>
+      <button class="help-button" id="helpBtn">? <span>CONTROLS</span></button>
+    </div>
+    <div class="help-pop" id="helpPop"><b>DRIVER CONTROLS</b><span>W / ↑ &nbsp; 가속</span><span>S / ↓ &nbsp; 브레이크</span><span>A / D &nbsp; 스티어링</span><span>Q / E &nbsp; 수동 기어 변경</span><span>SPACE &nbsp; ERS 부스트</span><span>P &nbsp; 일시정지</span></div>
+    <div class="mobile-controls" id="mobileControls"><div class="mc-group"><button class="gear-btn" data-shift="-1" aria-label="Downshift">−</button><button data-key="a" aria-label="Steer left">◀</button><button data-key="d" aria-label="Steer right">▶</button><button class="ers-btn" data-boost="1">ERS</button></div><div class="mc-group"><button data-key="s">BRAKE</button><button data-key="w">GAS</button><button class="gear-btn" data-shift="1" aria-label="Upshift">+</button></div></div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
