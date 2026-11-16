@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#080b10" />
+  <link rel="icon" href="data:," />
+  <title>APEX — Grand Prix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.169.0/build/three.module.js"}}</script>
+</head>
+<body>
+  <div id="game">
+    <canvas id="scene" aria-label="Three dimensional Formula racing circuit"></canvas>
+    <div class="vignette"></div>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Apex Racing home"><span class="brand-mark">A</span><span>APEX<span class="brand-sub">MOTORSPORT</span></span></a>
+      <div class="event"><span class="event-kicker">WORLD CHAMPIONSHIP · ROUND 07</span><span class="event-name">MONACO GRAND PRIX</span></div>
+      <button id="sound-btn" class="sound-btn" aria-label="Toggle sound"><span class="sound-icon">♪</span><span>SOUND <b id="sound-state">ON</b></span></button>
+    </header>
+    <section class="race-hud" id="race-hud" aria-live="polite">
+      <div class="position-card"><span class="hud-label">POSITION</span><div><strong id="position">P1</strong><span class="of">/ 8</span></div><span class="position-live"><i></i> LIVE</span></div>
+      <div class="lap-card"><span class="hud-label">LAP</span><div><strong id="lap">01</strong><span class="of">/ 03</span></div><span id="lap-time" class="mono">00:00.000</span></div>
+      <div class="delta-card"><span class="hud-label">BEST LAP</span><strong id="best-lap" class="mono">—:—.---</strong><span class="delta-note">PERSONAL BEST</span></div>
+    </section>
+    <section class="speed-panel" id="speed-panel">
+      <div class="speed-line"><span class="hud-label">SPEED</span><span class="gear" id="gear">1</span></div>
+      <div class="speed-read"><strong id="speed">000</strong><span>KM/H</span></div>
+      <div class="rev-bar"><div id="rev-fill"></div><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="speed-footer"><span>DRS <b id="drs">OFF</b></span><span>ERS <b>78<span>%</span></b></span></div>
+    </section>
+    <div class="track-label"><i></i><div><strong>MONTE CARLO</strong><span>43°44'16.4"N&nbsp; 7°25'27.9"E</span></div></div>
+    <div class="flag" id="flag"><span class="flag-light"></span><span>FORMATION LAP</span></div>
+    <div class="countdown" id="countdown"><span>GET READY</span><strong id="count-value">3</strong></div>
+    <div class="start-screen" id="start-screen">
+      <div class="start-card">
+        <div class="eyebrow"><span class="eyebrow-rule"></span> THE STREETS ARE CALLING</div>
+        <h1>OWN THE<br><em>APEX.</em></h1>
+        <p>One circuit. Three laps. No room for second place.</p>
+        <div class="race-meta"><div><span>RACE DISTANCE</span><strong>3 LAPS</strong></div><div><span>CONDITIONS</span><strong><i class="sun"></i> CLEAR · 24°C</strong></div><div><span>GRID</span><strong>8 DRIVERS</strong></div></div>
+        <button id="start-btn" class="start-btn"><span>START YOUR ENGINE</span><b>↗</b></button>
+        <div class="controls-note"><span class="keycap">←</span><span class="keycap">→</span> STEER <i></i> <span class="keycap wide">W</span><span class="keycap">↑</span> ACCELERATE <i></i> <span class="keycap">S</span><span class="keycap">↓</span> BRAKE</div>
+      </div>
+      <div class="start-foot"><span>FIA FORMULA ONE WORLD CHAMPIONSHIP</span><span>DRIVER 01&nbsp;&nbsp; · &nbsp;&nbsp;SCUDERIA APEX</span></div>
+    </div>
+    <div class="finish-screen hidden" id="finish-screen"><div class="finish-card"><span class="eyebrow">CHEQUERED FLAG</span><h2 id="finish-title">RACE<br><em>WINNER.</em></h2><p id="finish-copy">A flawless drive through the streets of Monaco.</p><div class="finish-stats"><div><span>FINAL POSITION</span><strong id="final-position">P1</strong></div><div><span>BEST LAP</span><strong id="final-best">—:—.---</strong></div></div><button id="again-btn" class="start-btn"><span>RACE AGAIN</span><b>↗</b></button></div></div>
+    <div class="touch-controls" id="touch-controls"><button data-control="left" aria-label="Steer left">‹</button><div><button data-control="brake" aria-label="Brake">−</button><button data-control="throttle" aria-label="Accelerate">+</button></div><button data-control="right" aria-label="Steer right">›</button></div>
+    <div class="toast" id="toast"></div>
+    <div class="bottom-hint" id="bottom-hint"><span>W</span> HOLD TO ACCELERATE <i>·</i> FIND YOUR LINE</div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>
